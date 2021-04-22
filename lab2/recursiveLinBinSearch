@@ -1,61 +1,58 @@
-#include <stdio.h>
-#include <time.h>
-int linearSearch(int arr[],int l,int h,int ele){
-    if(l>h){
-        return -1;
-    }
-    if(arr[l]!=ele){
-        return linearSearch(arr, ++l, h, ele);
-    }
-    else{
-        return l;
-    }
-    return -1;
-}
-int binarySearch(int arr[],int l,int h,int ele){
-    if(l<h)
-    {
-    int mid=(l+h)/2;
-    if(arr[mid]==ele){
-        return mid;
-    }
-    else if(ele>arr[mid]){
-        l=mid+1;
-        return binarySearch(arr, l, h, ele);
-    }
-    else{
-        h=mid-1;
-        return binarySearch(arr, l, h, ele);
-    }
-    }
-    else
-    return -1;
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+int binary_srch(int *a, int s, int e, int key) {
+	int m = (s + e) / 2;
+
+	if (e >= s) {
+		if (a[m] == key) {
+			return m;
+		}
+		else if (a[m] > key) {
+			return binary_srch(a, s, m - 1, key);
+		}
+		return binary_srch(a, m + 1, e, key);
+	}
+	return -1;
 }
 
-void main( )
-{
-    int arr[30],n,i,ele,opt,pos;
-    time_t start,end;
-    printf("Enter the no. of elements in array :");
-    scanf("%d",& n);
-    printf("enter array elements:\n");
-    for(i=0;i<n;i++){
-        scanf("%d",& arr[i]);
-    }
-    printf("Enter the element to be searched :");
-    scanf("%d",& ele);
-    printf("enter 1 : linear search\nenter 2 : binary search\n");
-    scanf("%d",& opt);
-    if(opt==0){
-        start=time(NULL);
-        pos=linearSearch(arr,0,n-1,ele);
-        end=time(NULL);
-    }
-    else{
-        start=time(NULL);
-        pos=binarySearch(arr,0,n-1,ele);
-        end=time(NULL);
-    }
-    printf("element found at %d index\n",pos);
-    printf("time : %.4f\n",difftime(end, start));
+int linear_srch(int *a, int n, int i, int key) {
+	if (i < n) {
+		if (a[i] == key) {
+			return i;
+		}
+		return linear_srch(a, n, i + 1, key);
+	}
+	return -1;
+}
+
+void main() {
+	int n, key;
+	double start, end;
+	printf("Enter number of elements : ");
+	scanf("%d", &n);
+	int a[n];
+	for (int i = 0; i < n; i++) {
+		a[i] = rand()%100 +1;
+	}
+	printf("Enter element to be searched : ");
+	scanf("%d", &key);
+	start = clock();
+	int ans = linear_srch(a, n, 0, key);
+	end = clock();
+	if (ans != -1) {
+		printf("Element is present in the array at %d position\n", ans);
+	}
+	else {
+		printf("Element not present \n");
+	}
+	printf("Time taken by linear search for %d elements : %f\n", n, ((double)(end - start) / CLOCKS_PER_SEC));
+
+	start = clock();
+	ans = binary_srch(a, 0, n - 1, key);
+	end = clock();
+	printf("Time taken by binary search for %d elements : %f\n", n, ((double)(end - start) / CLOCKS_PER_SEC));
+
+
 }
