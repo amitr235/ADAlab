@@ -1,57 +1,68 @@
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
+C#, VB, Perl, Swift, Prolog, Javascript, Pascal, HTML, CSS, JS
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
 #include<stdio.h>
-
-int getMedian(int ar1[], int ar2[], int n)
-{
-int i = 0; 
-int j = 0; 
-int count;
-int m1 = -1, m2 = -1;
-
-/* Since there are 2n elements, median will be average
-of elements at index n-1 and n in the array obtained after
-merging ar1 and ar2 */
-for(count = 0; count <= n; count++)
-{
-    
-if(i == n)
-{
-m1 = m2;
-m2 = ar2[0];
-break;
+#include<time.h>
+#include<stdlib.h>
+void median(int arr[],int size){
+    float n=(arr[size/2]+arr[(size-1)/2])/2.0;
+    printf("\nThe median of the array is: %f",n);
 }
-
-
-else if(j == n)
-{
-m1 = m2;
-m2 = ar1[0];
-break;
+void sort(int arr[],int size){
+    int temp,i,j;
+    for(i=0;i<size;i++){
+        for(j=i;j<size;j++){
+            if(arr[j]<arr[i]){
+                temp=arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+            }
+        }
+    }
 }
-
-if(ar1[i] < ar2[j])
-{
-m1 = m2; /* Store the prev median */
-m2 = ar1[i];
-i++;
+void printArray(int arr[],int size){
+    for(int i=0;i<size;i++){
+        printf("%d\n",arr[i]);
+    }
 }
-else
-{
-m1 = m2; /* Store the prev median */
-m2 = ar2[j];
-j++;
-}
-}
-
-return (m1 + m2)/2;
-}
-
-int main()
-{
-int ar1[] = {1, 12, 15, 26, 38};
-int ar2[] = {2, 13, 17, 30, 45};
-
-printf("%d", getMedian(ar1, ar2, 5)) ;
-
-getchar();
-return 0;
+int main(){
+    int n,i,j;
+    printf("Enter size of both arrays: ");
+    scanf("%d",&n);
+    int a[n],b[n],c[2*n];
+    for(i=0;i<n;i++){
+        a[i]=rand();
+    }
+    for(i=0;i<n;i++){
+        b[i]=rand();
+    }
+    printf("\nElements of first array: \n");
+    printArray(a,n);
+    printf("\nElements of second array: \n");
+    printArray(b,n);
+    sort(a,n);
+    sort(b,n);
+    printf("\nSorted first array: \n");
+    printArray(a,n);
+    printf("\nSorted second array: \n");
+    printArray(b,n);
+    clock_t begin = clock();
+    for(j=0;j<n;j++){
+        c[j]=a[j];
+    }
+    for(int k=0;k<n;k++){
+        c[j+k]=b[k];
+    }
+    printf("\nMerged array is: \n");
+    printArray(c,2*n);
+    median(c,2*n);
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("\nExecution Time : %f seconds\n", time_spent);
+    return 0;
 }
